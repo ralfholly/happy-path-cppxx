@@ -29,7 +29,6 @@ void test_cpp_version() {
 
 //////////////////////////////////////////////////
 // 'nullptr' is a type-safe null pointer constant.
-// Since C++11.
 //
 void fun(int) { cout << "fun(int i)" << endl; }
 void fun(int*) { cout << "fun(int*)" << endl; }
@@ -49,24 +48,8 @@ void test_nullptr() {
 
 
 //////////////////////////////////////////////////
-// Better readability for numeric constants
-// through (digit) separators and a possibility
-// to define binary constants.
-// Since C++14.
-//
-void test_numeric_literals() {
-#if __cplusplus >= 201402L
-    assert(42'000'000 == 42000000); // Since C++14.
-    assert(0b100 == 4);             // Since C++14.
-    assert(0b1'0000'0000 == 256);   // Since C++14.
-#endif
-}
-
-
-//////////////////////////////////////////////////
 // Automatic type deduction through 'auto'
 // keyword.
-// Since C++11.
 void test_auto() {
     auto i = 42;     // i is of type 'int'.
     auto x = 1.234;  // x is of type 'double'
@@ -86,7 +69,6 @@ void test_auto() {
 //////////////////////////////////////////////////
 // Range-based for-loops simplify iteration over
 // sequences.
-// Since C++11.
 void test_range_based_for_loops() {
     vector<int> values;
     values.push_back(23);
@@ -111,7 +93,6 @@ void test_range_based_for_loops() {
 //////////////////////////////////////////////////
 // Uniform initialization is a common way to
 // initialize objects _and_ containers.
-// Since C++11.
 void test_uniform_initialization() {
     int a = 42;
     int b(42);
@@ -141,7 +122,6 @@ void test_uniform_initialization() {
 //////////////////////////////////////////////////
 // Scoped enumerations are safer than traditional
 // enums and support different underlying types.
-// Since C++11.
 void test_scoped_enumerations() {
     enum class Colors { red, green, blue=42 };
     Colors my_color;
@@ -159,12 +139,10 @@ void test_scoped_enumerations() {
 //  enum class Colors3 : float { red, green, blue=42.3 }; // Error.
 }
 
-
 int main()
 {
     test_cpp_version();
     test_nullptr();
-    test_numeric_literals();
     test_auto();
     test_range_based_for_loops();
     test_uniform_initialization();
