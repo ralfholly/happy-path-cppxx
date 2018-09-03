@@ -19,7 +19,7 @@ void test_cpp_version() {
 #elif __cplusplus == 201402L
     cout << "C++14";
 #else
-    cout << "?";
+    cout << "Huh?";
 #endif
     cout << endl;
 }
@@ -32,9 +32,9 @@ void test_cpp_version() {
 // Since C++14.
 //
 void test_numeric_literals() {
-    assert(42'000'000 == 42000000); // Since C++14.
-    assert(0b100 == 4);             // Since C++14.
-    assert(0b1'0000'0000 == 256);   // Since C++14.
+    assert(42'000'000 == 42000000);
+    assert(0b100 == 4);
+    assert(0b1'0000'0000 == 256);
 }
 
 

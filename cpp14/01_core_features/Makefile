@@ -1,6 +1,6 @@
-CXXFLAGS=-std=c++14 -g -O0
+CXXFLAGS=-std=c++14 -g -O0 -Wall
 
 core_features: core_features.cpp
 
 .PHONY clean:
-	find -executable -delete
+	find -type f -executable -delete

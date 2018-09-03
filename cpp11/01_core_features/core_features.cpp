@@ -21,7 +21,7 @@ void test_cpp_version() {
 #elif __cplusplus == 201402L
     cout << "C++14";
 #else
-    cout << "?";
+    cout << "Huh?";
 #endif
     cout << endl;
 }
@@ -41,9 +41,7 @@ void test_nullptr() {
     fun(nullptr);       // Calls fun(int*)
     fun(0);             // Calls fun(int)
 
-    UNUSED(p1);
-    UNUSED(p2);
-    UNUSED(p3);
+    UNUSED(p1); UNUSED(p2); UNUSED(p3);
 }
 
 
@@ -55,9 +53,7 @@ void test_auto() {
     auto x = 1.234;  // x is of type 'double'
     auto y = i + x;  // y is of type 'double'
 
-    UNUSED(i);
-    UNUSED(x);
-    UNUSED(y);
+    UNUSED(i); UNUSED(x); UNUSED(y);
 
 // NOTE:'auto' cannot be used with function parameters:
 //    extern int some_fun(auto x); // Error: auto parameters not permitted.
@@ -70,10 +66,7 @@ void test_auto() {
 // Range-based for-loops simplify iteration over
 // sequences.
 void test_range_based_for_loops() {
-    vector<int> values;
-    values.push_back(23);
-    values.push_back(42);
-    values.push_back(19);
+    vector<int> values {23, 42, 19};
 
     for (auto v : values) {         // 'v' is a local copy of item.
         cout << v << endl;
@@ -94,17 +87,24 @@ void test_range_based_for_loops() {
 // Uniform initialization is a common way to
 // initialize objects _and_ containers.
 void test_uniform_initialization() {
-    int a = 42;
-    int b(42);
-    int c{42};  // Uniform initialization.
-    int d{};    // Zero initialization.
-    UNUSED(a); UNUSED(b); UNUSED(c); UNUSED(d);
+    int a = 42;    // Traditional initialization.
+    int b(42);     // dito.
+    int c{42};     // Uniform initialization.
+    int d{};       // Zero initialization.
+    int e = int(); // Traditional zero intialization.
+    UNUSED(a); UNUSED(b); UNUSED(c); UNUSED(d); UNUSED(e);
+}
 
+
+//////////////////////////////////////////////////
+// Initializer lists provide a means to pass
+// multiple values to constructors.
+void test_initializer_lists() {
     // Initializer lists.
-    vector<int> values1 { 1, 2, 3 };    // Would require 3 push_back() calls in C++03.
-    vector<int> values2 = { 1, 2, 3 };  // dito.
-    vector<int> values3 { };            // Empty vector.
-    vector<int> values4 = { };          // dito.
+    vector<int> values1 {1, 2, 3};   // Would require 3 explicit push_back() calls in C++03.
+    vector<int> values2 = {1, 2, 3}; // dito.
+    vector<int> values3{};           // Empty vector.
+    vector<int> values4 = {};        // dito.
 
     class MyClass {
     public:
@@ -116,6 +116,7 @@ void test_uniform_initialization() {
     MyClass mc3{};              // dito.
     MyClass mc4 = {};           // dito.
     MyClass mc5();              // Just a function declaration.
+    UNUSED(mc1); UNUSED(mc2); UNUSED(mc3); UNUSED(mc4);
 }
 
 
@@ -131,13 +132,14 @@ void test_scoped_enumerations() {
 //  cout << Colors::red << endl;        // Error: no implicit conversion to 'int'
     assert(42 == static_cast<int>(Colors::blue)); // Fine.
 
-    // Enums of different underlying types:
+    // Enums of non-int underlying types:
     enum class Colors2 : unsigned char { red, green, blue=42 };
     assert(sizeof(Colors2) == 1);
 
     // Underlying type must be integral:
 //  enum class Colors3 : float { red, green, blue=42.3 }; // Error.
 }
+
 
 int main()
 {
@@ -146,6 +148,7 @@ int main()
     test_auto();
     test_range_based_for_loops();
     test_uniform_initialization();
+    test_initializer_lists();
     test_scoped_enumerations();
 
     return 0;
