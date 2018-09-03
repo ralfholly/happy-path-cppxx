@@ -107,8 +107,7 @@ void test_constructor_delegation() {
 }
 
 
-int main()
-{
+int main() {
     test_special_mem_fun_declarations();
     test_override();
     test_final();

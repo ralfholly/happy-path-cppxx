@@ -38,8 +38,7 @@ void test_numeric_literals() {
 }
 
 
-int main()
-{
+int main() {
     test_cpp_version();
     test_numeric_literals();
 

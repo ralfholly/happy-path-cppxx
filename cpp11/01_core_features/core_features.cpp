@@ -28,6 +28,20 @@ void test_cpp_version() {
 
 
 //////////////////////////////////////////////////
+// 'static_assert' is a keyword that checks
+// assertions at compile-time.
+//
+void test_static_assert() {
+    static_assert(1 + 2 == 3, "Basic arithmetic failed");
+    // String argument (ie. error message) is mandatory until C++17.
+    static_assert(sizeof(long) >= sizeof(int), "");
+    int a = 42;
+//  static_assert(a == 42, ""); // Error: non-const expression not allowed.
+    UNUSED(a);
+}
+
+
+//////////////////////////////////////////////////
 // 'nullptr' is a type-safe null pointer constant.
 //
 void fun(int) { cout << "fun(int i)" << endl; }
@@ -141,9 +155,9 @@ void test_scoped_enumerations() {
 }
 
 
-int main()
-{
+int main() {
     test_cpp_version();
+    test_static_assert();
     test_nullptr();
     test_auto();
     test_range_based_for_loops();
