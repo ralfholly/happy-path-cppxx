@@ -7,6 +7,11 @@ Modern C++ can be really hard to learn! This project aims at teaching just the *
 Upcoming topics
 ---------------
 
+- Core features
+  - `decltype`
+  - Foo<Bar<int>> syntax now legal
+  - Raw strings
+  - constexpr
 - Variadic templates
 - Containers
 - Move semantics
