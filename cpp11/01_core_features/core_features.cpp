@@ -123,7 +123,13 @@ void test_initializer_lists() {
     class MyClass {
     public:
         MyClass() { cout << "MyClass::MyClass()" << endl; }
-        MyClass(const initializer_list<int>& i) { cout << "MyClass::MyClass{}" << endl; }
+        MyClass(const initializer_list<int>& list) {
+            cout << "MyClass::MyClass{";
+            for (const auto& e: list) {
+                cout << e << ",";
+            }
+            cout << "} // list.size() is " << list.size() << endl;
+        }
     };
     MyClass mc1 = {77,4,3,4};   // Calls MyClass{}.
     MyClass mc2;                // Calls MyClass().
