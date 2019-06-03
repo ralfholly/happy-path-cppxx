@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cassert>
 #include <vector>
+#include <cstring>
 
 using namespace std;
 
@@ -161,6 +162,24 @@ void test_scoped_enumerations() {
 }
 
 
+//////////////////////////////////////////////////
+// Raw string literals let you define string
+// literals without the need to escape special
+// characters like backslash and quotes.
+void test_raw_string_literals() {
+    // No delimiter.
+    assert(strcmp(R"(actual\str"i"ng)", "actual\\str\"i\"ng") == 0);
+    // Delimter is '#'.
+    assert(strcmp(R"#(actual\str"i"ng)#", "actual\\str\"i\"ng") == 0);
+    // Delimter is 'foo'.
+    assert(strcmp(R"foo(actual\str"i"ng)foo", "actual\\str\"i\"ng") == 0);
+    // Raw strings can span multiple lines.
+    assert(strcmp(R"foo(actual\
+    str"i"ng
+)foo", "actual\\\n    str\"i\"ng\n") == 0);
+}
+
+
 int main() {
     test_cpp_version();
     test_static_assert();
@@ -170,6 +189,7 @@ int main() {
     test_uniform_initialization();
     test_initializer_lists();
     test_scoped_enumerations();
+    test_raw_string_literals();
 
     return 0;
 }
