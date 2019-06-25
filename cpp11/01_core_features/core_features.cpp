@@ -180,6 +180,48 @@ void test_raw_string_literals() {
 }
 
 
+//////////////////////////////////////////////////
+// Using 'constexpr' on a variable makes it
+// implicitly constant.
+//
+void test_constexpr_on_variable() {
+    constexpr int answer = 42;
+    static_assert(answer == 42, "impossible!");
+    int my_array[answer];
+    UNUSED(my_array);
+
+    const constexpr double PI = 3.14; // Redundant 'const' declaration.
+    UNUSED(PI);
+}
+
+
+//////////////////////////////////////////////////
+// In C++11, 'constexpr' functions are quite restriced:
+//  - no local variables
+//  - only a single 'return' statement
+//  - no loops (but recursion allowed)
+// 'constexpr' functions must be able to return a 'constexpr' value if provided with only 'constexpr' arguments.
+//
+constexpr int add(int a, int b) {
+    return a + b;
+}
+
+void test_constexpr_on_function() {
+    constexpr int val1 = 1;
+    constexpr int val2 = 2;
+    static_assert(add(val1, val2) == 3, "impossible!");
+    static_assert(add(100, 99) == 199, "impossible!");
+    int array[add(1, 2)];
+    UNUSED(array);
+
+    int val3 = 42;
+    int val4 = 10;
+    // static_assert(add(val3, val4) == 52, "impossible!"); Error: 'add' doesn't yield a 'constexpr'.
+    int val5 = add(val3, val4); // OK, 'add' may be called with non 'constexpr' arguments.
+    UNUSED(val5);
+}
+
+
 int main() {
     test_cpp_version();
     test_static_assert();
@@ -190,6 +232,8 @@ int main() {
     test_initializer_lists();
     test_scoped_enumerations();
     test_raw_string_literals();
+    test_constexpr_on_variable();
+    test_constexpr_on_function();
 
     return 0;
 }

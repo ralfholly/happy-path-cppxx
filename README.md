@@ -10,7 +10,6 @@ Upcoming topics
 - Core features
   - `decltype`
   - Foo<Bar<int>> syntax now legal
-  - constexpr
 - User defined literals
 - Variadic templates
 - Containers
