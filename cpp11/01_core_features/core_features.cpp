@@ -95,6 +95,9 @@ void test_range_based_for_loops() {
         cout << v << endl;
 //      v += 1;                     // Error: 'v' is read-only.
     }
+    for (auto i : { 1, 2, 3 }) {    // Do something 3 times.
+        cout << i << endl;
+    }
 }
 
 
