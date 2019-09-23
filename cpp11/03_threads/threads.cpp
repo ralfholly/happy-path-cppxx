@@ -51,6 +51,51 @@ void test_thread_simple_with_lambda() {
 
 
 //////////////////////////////////////////////////
+// Condition variables allow (multiple) threads to
+// wait for an event.
+void test_condition_variable() {
+    // Use of condition variables requires a mutex.
+    mutex mtx;
+    condition_variable cond_var;
+    // This variable (combined with the while loop in the consumer) guards against
+    // spurious wakeups. Spurious wakeups: It's possible that the wait operation of
+    //   a condition variable is aborted even though the condition variable hasn't
+    //   been explicitly signalled/notified.
+    bool notified = false;
+
+    // Producer notifies/signals condition variable.
+    auto producer = std::thread([&]
+    {
+        this_thread::sleep_for(chrono::seconds(2));
+        unique_lock<mutex> lock(mtx);
+        notified = true;
+        cond_var.notify_all();
+    });
+
+    // Consumer waits on condition variable being signalled.
+    auto consumer = std::thread([&]
+    {
+        // Lock *must* be acquired before calling wait on condition variable.
+        unique_lock<mutex> lock(mtx);
+        cout << "Waiting to be notified..." << endl;
+        // While loop guards against spurious wakeups.
+        while (!notified) {
+            // Upon calling wait, lock is automatically released.
+            cond_var.wait(lock);
+            // Upon wakeup, lock is automatically re-acquired.
+        }
+
+        // Alternative implementation with implicit while loop:
+        // cond_var.wait(lock, [&]() -> bool { return notified; });
+        cout << "... notified:" << boolalpha << notified << endl;
+    });
+
+    producer.join();
+    consumer.join();
+}
+
+
+//////////////////////////////////////////////////
 // Two threads communicate via promise/future.
 // A promise object has a future object, the former
 // is used by the producer (PROmise -> PROducer),
@@ -64,7 +109,7 @@ void test_future_promise_simple() {
     // Producer sets the promise's value.
     auto producer = std::thread([&]
     {
-        this_thread::sleep_for(chrono::seconds(1));
+        this_thread::sleep_for(chrono::seconds(2));
         promise.set_value("Hello World");
     });
 
@@ -84,6 +129,7 @@ void test_future_promise_simple() {
 int main() {
     test_thread_simple_with_thread_function();
     test_thread_simple_with_lambda();
+    test_condition_variable();
     test_future_promise_simple();
 
     return 0;

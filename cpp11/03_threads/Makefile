@@ -9,4 +9,4 @@ test: $(TARGET)
 	./$<
 
 .PHONY clean:
-	find -type f -executable -delete
+	rm -rf $(TARGET)
