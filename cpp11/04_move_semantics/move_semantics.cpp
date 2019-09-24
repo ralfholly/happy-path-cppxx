@@ -115,7 +115,6 @@ void test_with_move_semantics() {
 }
 
 
-// 
 int main() {
     test_without_move_semantics();
     test_with_move_semantics();
