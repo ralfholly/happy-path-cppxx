@@ -74,7 +74,7 @@ void test_condition_variable() {
     {
         // Lock *must* be acquired before calling wait on condition variable.
         unique_lock<mutex> lock(mtx);
-        cout << "Waiting to be notified..." << endl;
+        cout << "Waiting to be notified... " << flush;
         // While loop guards against spurious wakeups.
         while (!notified) {
             // Upon calling wait, lock is automatically released.
@@ -84,7 +84,7 @@ void test_condition_variable() {
 
         // Alternative implementation with implicit while loop:
         // cond_var.wait(lock, [&]() -> bool { return notified; });
-        cout << "... notified:" << boolalpha << notified << endl;
+        cout << "notified:" << boolalpha << notified << endl;
     });
 
     producer.join();
@@ -113,13 +113,30 @@ void test_future_promise_simple() {
     // Consumer gets the future's value.
     auto consumer = std::thread([&]
     {
-        cout << "Waiting for future... " << endl;
+        cout << "Waiting for future... " << flush;
         auto futval = future.get();
-        cout << "... got it: " << futval << endl;
+        cout << "got it: " << futval << endl;
     });
 
     producer.join();
     consumer.join();
+}
+
+
+//////////////////////////////////////////////////
+// std::async launches a function (asynchronously
+// or synchronously, depending on the launch
+// policy) and returns a future to that
+// function's return value.
+void test_async() {
+    auto add_two = [](int a, int b) -> int {
+        cout << "Computing " << a << " + " << b << "... " << flush;
+        this_thread::sleep_for(chrono::seconds(3));
+        return a + b;
+    };
+    auto futval = async(std::launch::async, add_two, 1, 2);
+    int result = futval.get();
+    cout << result << endl;
 }
 
 
@@ -128,6 +145,7 @@ int main() {
     test_thread_simple_with_lambda();
     test_condition_variable();
     test_future_promise_simple();
+    test_async();
 
     return 0;
 }
