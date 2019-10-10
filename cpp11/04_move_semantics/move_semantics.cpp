@@ -63,7 +63,7 @@ void test_with_move_semantics() {
         // The 'move' copy constructor. (Not used in this example, but shown anyway).
         Holder(Holder&& rhs) {
             cout << "Holder(Holder&&) called" << endl;
-            // Reuse values from rhs without deeply copying.
+            // Reuse ('steal') values from rhs without deeply copying them.
             n_ = rhs.n_;
             values_ = rhs.values_;
             // Leave rhs in a state that is valid and causes no harm
@@ -83,12 +83,12 @@ void test_with_move_semantics() {
             std::copy(rhs.values_, rhs.values_ + rhs.n_, values_);
             return *this;
         }
-        // The 'move' assignment operator
+        // The 'move' assignment operator.
         Holder& operator=(Holder&& rhs) {
             cout << "operator=(Holder&&) called" << endl;
             if (this == &rhs) return *this;
             delete[] values_;
-            // Reuse values from rhs without deeply copying.
+            // Reuse ('steal') values from rhs without deeply copying them.
             n_ = rhs.n_;
             values_ = rhs.values_;
             // Leave rhs in a state that is valid and causes no harm
@@ -110,7 +110,7 @@ void test_with_move_semantics() {
     auto create_big_holder = [] { return Holder(1000); };
 
     Holder holder(42);
-    holder = create_big_holder(); // Thanks to move semantics, op(Holder&&) is called instead of op(const Holder&).
+    holder = create_big_holder(); // Thanks to move semantics, op=(Holder&&) is called instead of op=(const Holder&).
                                   // Thus, values from returned temporary are reused without expensive memory allocation/copying.
 }
 
