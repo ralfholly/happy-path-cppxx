@@ -8,9 +8,6 @@
 
 using namespace std;
 
-#define UNUSED(x) ((void)(x))
-
-
 
 static void thread_func(int i) {
     for (auto i : { 1, 2, 3}) {
