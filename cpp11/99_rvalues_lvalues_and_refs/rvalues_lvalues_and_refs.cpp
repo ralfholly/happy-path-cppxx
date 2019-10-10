@@ -16,11 +16,17 @@ int foo() { return 23; }
 
 void test_basics() {
     int x = 42;
-    int *px = &x;       // 'x' is an lvalue.
-    // int *px = &42;   // Error: '42' is an rvalue.
+    int *px = &x;           // 'x' is an lvalue.
+    // int *px1 = &42;      // Error: '42' is an rvalue.
+    // int *px2 = &foo();   // Error: 'foo's return value is an rvalue.
+    int (*pfoo)() = &foo;   // 'foo' (the function itself) is an lvalue.
+}
 
-    int& rx = x;        // 'rx' is an lvalue reference...
-    int* prx = &rx;     // ... which itself is an lvalue because we can take its address!
+
+void test_lvalue_references() {
+    int x = 42;
+    int& rx = x;            // 'rx' is an lvalue reference...
+    int* prx = &rx;         // ... which itself is an lvalue because we can take its address!
 
     const int& rfun = foo(); // Can bind a const lvalue reference to an rvalue.
                              // This extends the life-time of the temporary.
@@ -45,6 +51,7 @@ void test_rvalue_references() {
 
 int main() {
     test_basics();
+    test_lvalue_references();
     test_rvalue_references();
 
     return 0;
