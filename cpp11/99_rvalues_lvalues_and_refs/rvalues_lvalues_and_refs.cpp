@@ -25,12 +25,12 @@ void test_basics() {
 
 void test_lvalue_references() {
     int x = 42;
-    int& rx = x;            // 'rx' is an lvalue reference...
-    int* prx = &rx;         // ... which itself is an lvalue because we can take its address!
+    int& rx = x;                // 'rx' is an lvalue reference...
+    int* prx = &rx;             // ... which itself is an lvalue because we can take its address!
 
-    const int& rfun = foo(); // Can bind a const lvalue reference to an rvalue.
-                             // This extends the life-time of the temporary.
-    // int& rfun = foo();    // Error: can't bind rvalue to a non-const lvalue reference.
+    const int& rfun = foo();    // Can bind a const lvalue reference to an rvalue.
+                                // This extends the life-time of the temporary.
+    // int& rfun = foo();       // Error: can't bind rvalue to a non-const lvalue reference.
 }
 
 
@@ -38,12 +38,15 @@ void test_rvalue_references() {
     int&& rfun = foo();
     int* prfun = &rfun;         // rvalue reference itself is an lvalue, we can take its address!
 
+    int&& r42 = 42;             // Can bind rvalue reference to literal.
     int x = 42;
     // int&& rx = x;            // Error: can't bind lvalue to an rvalue reference.
     int&& rx = std::move(x);    // Convert lvalue to rvalue.
 
     // Wow! Change rvalue through rvalue reference is possible.
-    // Looks crazy, but is required to implement move copy-ctor/assignment op.
+    // Looks crazy, but is required to set object to invalid state
+    // in copy-ctor/assignment op.
+    r42 = 23;
     rfun = 32;
     rx = 11;
 }
