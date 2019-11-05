@@ -43,6 +43,9 @@ void test_rvalue_references() {
     // int&& rx = x;            // Error: can't bind lvalue to an rvalue reference.
     int&& rx = std::move(x);    // Convert lvalue to rvalue.
 
+    // int&& rx2 = rx;          // Error: can't bind lvalue (rx) to rvalue reference.
+    int&& rx2 = std::move(rx);  // That's the right way to duplicate rvalue references.
+
     // Wow! Change rvalue through rvalue reference is possible.
     // Looks crazy, but is required to set object to invalid state
     // in copy-ctor/assignment op.
