@@ -13,7 +13,5 @@ Upcoming topics
 - User defined literals
 - Variadic templates
 - Containers
-- Move semantics
 - Lambdas
-- Concurrency
 - Regexps
