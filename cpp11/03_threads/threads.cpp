@@ -54,16 +54,17 @@ void test_condition_variable() {
     // Use of condition variables requires a mutex.
     mutex mtx;
     condition_variable cond_var;
-    // This variable (combined with the while loop in the consumer) guards against
-    // spurious wakeups. Spurious wakeups: It's possible that the wait operation of
-    //   a condition variable is aborted even though the condition variable hasn't
-    //   been explicitly signalled/notified.
+    // The following variable (combined with the while loop in the consumer)
+    // guards against spurious wakeups. Spurious wakeups: It's possible that the
+    // wait operation of a condition variable is aborted even though the
+    // condition variable hasn't been explicitly signalled/notified.
     bool notified = false;
 
     // Producer notifies/signals condition variable.
     auto producer = std::thread([&]
     {
         this_thread::sleep_for(chrono::seconds(2));
+        // ... wait a little ...
         unique_lock<mutex> lock(mtx);
         notified = true;
         cond_var.notify_all();
@@ -100,19 +101,19 @@ void test_condition_variable() {
 void test_future_promise_simple() {
     // Allocate a promise.
     auto promise = std::promise<std::string>();
-    // Get the promise's future.
-    auto future = promise.get_future();
 
     // Producer sets the promise's value.
-    auto producer = std::thread([&]
+    auto producer = std::thread([&]()
     {
         this_thread::sleep_for(chrono::seconds(2));
-        promise.set_value("Hello World");
+        promise.set_value("Howdy!");
     });
 
     // Consumer gets the future's value.
-    auto consumer = std::thread([&]
+    auto consumer = std::thread([&]()
     {
+        // Get the promise's future.
+        auto future = promise.get_future();
         cout << "Waiting for future... " << flush;
         auto futval = future.get();
         cout << "got it: " << futval << endl;
@@ -132,11 +133,12 @@ void test_async() {
     auto add_two = [](int a, int b) -> int {
         cout << "Computing " << a << " + " << b << "... " << flush;
         this_thread::sleep_for(chrono::seconds(3));
-        return a + b;
+        // ... wait a little ...
+        return a + b;   // Like an implicit promise.set_value(a + b).
     };
-    auto futval = async(std::launch::async, add_two, 1, 2);
-    int result = futval.get();
-    cout << result << endl;
+    auto future = async(std::launch::async, add_two, 1, 2);
+    int futval = future.get();
+    cout << futval << endl;
 }
 
 

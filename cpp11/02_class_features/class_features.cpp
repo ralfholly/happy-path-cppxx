@@ -4,8 +4,7 @@
 
 using namespace std;
 
-#define UNUSED(x) ((void)(x))
-
+#pragma GCC diagnostic ignored "-Wunused-variable"
 
 //////////////////////////////////////////////////
 // Special member function declarations 'default'
@@ -98,8 +97,8 @@ void test_constructor_delegation() {
     class Apple {
     public:
         Apple(int i) { cout << "i: " << i << endl; }
-        Apple(const char* name) : 
-            Apple(strlen(name)){        // Invoke Apple(int) first,
+        Apple(const char* name) :
+            Apple(strlen(name)) {       // Invoke Apple(int) first,
                 cout << name << endl;   // then execute body.
         }
     };

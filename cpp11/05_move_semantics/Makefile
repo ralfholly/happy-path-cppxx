@@ -1,6 +1,7 @@
 CXXFLAGS=-std=c++11 -g -O0 -Wall
 
-TARGET := rvalues_lvalues_and_refs
+TARGET := move_semantics
+
 $(TARGET): $(TARGET).cpp
 
 .PHONY test:

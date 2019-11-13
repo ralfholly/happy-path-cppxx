@@ -1,10 +1,13 @@
 CXXFLAGS=-std=c++11 -g -O0 -Wall
 
-class_features: class_features.cpp
+TARGET = class_features
+
+$(TARGET): $(TARGET).cpp
 
 .PHONY test:
-test: class_features
+test: $(TARGET)
 	./$<
 
 .PHONY clean:
-	find -type f -executable -delete
+	rm -rf $(TARGET)
+

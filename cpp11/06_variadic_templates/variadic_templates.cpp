@@ -28,10 +28,10 @@ Arg combine(Arg arg) {
 
 // Multi-argument recursive template, strips one argument (FirstArg) per invocation.
 template<typename FirstArg, typename... RemArgs>
-FirstArg combine(FirstArg first, RemArgs... rem_args) {
+FirstArg combine(FirstArg first_arg, RemArgs... rem_args) {
     // Recursive call with first element stripped and remaining args expanded into
     // a comma-seperated list of arguments.
-    return first + combine(rem_args...);
+    return first_arg + combine(rem_args...);
 };
 
 
@@ -44,7 +44,7 @@ void test_variadic_templates_recursive() {
 //////////////////////////////////////////////////
 // Perfect forwarding of arguments.
 // The goal is to forward all arguments with the exact argument types to a
-// handling function. A typical use-case are factory functions that forward all
+// handling function. A typical use-case is a factory function that forwards all
 // received arguments to a constructor.
 
 

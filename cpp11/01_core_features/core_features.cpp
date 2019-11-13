@@ -6,8 +6,8 @@
 
 using namespace std;
 
-#define UNUSED(x) ((void)(x))
-
+#pragma GCC diagnostic ignored "-Wunused-variable"
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
 
 //////////////////////////////////////////////////
 // Check C++ version via value of __cplusplus
@@ -38,7 +38,6 @@ void test_static_assert() {
     static_assert(sizeof(long) >= sizeof(int), "");
     int a = 42;
 //  static_assert(a == 42, ""); // Error: non-const expression not allowed.
-    UNUSED(a);
 }
 
 
@@ -56,7 +55,6 @@ void test_nullptr() {
     fun(nullptr);       // Calls fun(int*)
     fun(0);             // Calls fun(int)
 
-    UNUSED(p1); UNUSED(p2); UNUSED(p3);
 }
 
 
@@ -67,8 +65,6 @@ void test_auto() {
     auto i = 42;     // i is of type 'int'.
     auto x = 1.234;  // x is of type 'double'
     auto y = i + x;  // y is of type 'double'
-
-    UNUSED(i); UNUSED(x); UNUSED(y);
 
 // NOTE:'auto' cannot be used with function parameters:
 //    extern int some_fun(auto x); // Error: auto parameters not permitted.
@@ -95,8 +91,8 @@ void test_range_based_for_loops() {
         cout << v << endl;
 //      v += 1;                     // Error: 'v' is read-only.
     }
-    for (auto i : { 1, 2, 3 }) {    // Do something 3 times.
-        cout << i << endl;
+    for (auto s : { "one", "two", "three" }) {    // Iterate over std::initializer_list.
+        cout << s << endl;
     }
 }
 
@@ -104,13 +100,14 @@ void test_range_based_for_loops() {
 //////////////////////////////////////////////////
 // Uniform initialization is a common way to
 // initialize objects _and_ containers.
+// Uniform initialization is now the preferred way
+// to initialize.
 void test_uniform_initialization() {
     int a = 42;    // Traditional initialization.
     int b(42);     // dito.
     int c{42};     // Uniform initialization.
     int d{};       // Zero initialization.
     int e = int(); // Traditional zero intialization.
-    UNUSED(a); UNUSED(b); UNUSED(c); UNUSED(d); UNUSED(e);
 }
 
 
@@ -128,7 +125,7 @@ void test_initializer_lists() {
     public:
         MyClass() { cout << "MyClass::MyClass()" << endl; }
         MyClass(const initializer_list<int>& list) {
-            cout << "MyClass::MyClass{";
+            cout << "MyClass::MyClass(const initializer_list<int>&) {";
             for (const auto& e: list) {
                 cout << e << ",";
             }
@@ -136,11 +133,11 @@ void test_initializer_lists() {
         }
     };
     MyClass mc1 = {77,4,3,4};   // Calls MyClass{}.
-    MyClass mc2;                // Calls MyClass().
-    MyClass mc3{};              // dito.
-    MyClass mc4 = {};           // dito.
-    MyClass mc5();              // Just a function declaration.
-    UNUSED(mc1); UNUSED(mc2); UNUSED(mc3); UNUSED(mc4);
+    MyClass mc2 {77,4,3,4};     // dito.
+    MyClass mc3;                // Calls MyClass().
+    MyClass mc4{};              // dito.
+    MyClass mc5 = {};           // dito.
+    MyClass mc6();              // Just a function declaration.
 }
 
 
@@ -177,9 +174,9 @@ void test_raw_string_literals() {
     // Delimter is 'foo'.
     assert(strcmp(R"foo(actual\str"i"ng)foo", "actual\\str\"i\"ng") == 0);
     // Raw strings can span multiple lines.
-    assert(strcmp(R"foo(actual\
+    assert(strcmp(R"foo(actual
     str"i"ng
-)foo", "actual\\\n    str\"i\"ng\n") == 0);
+)foo", "actual\n    str\"i\"ng\n") == 0);
 }
 
 
@@ -191,10 +188,8 @@ void test_constexpr_on_variable() {
     constexpr int answer = 42;
     static_assert(answer == 42, "impossible!");
     int my_array[answer];
-    UNUSED(my_array);
 
     const constexpr double PI = 3.14; // Redundant 'const' declaration.
-    UNUSED(PI);
 }
 
 
@@ -209,19 +204,17 @@ constexpr int add(int a, int b) {
     return a + b;
 }
 
-void test_constexpr_on_function() {
+void test_constexpr_function() {
     constexpr int val1 = 1;
     constexpr int val2 = 2;
     static_assert(add(val1, val2) == 3, "impossible!");
     static_assert(add(100, 99) == 199, "impossible!");
     int array[add(1, 2)];
-    UNUSED(array);
 
     int val3 = 42;
     int val4 = 10;
     // static_assert(add(val3, val4) == 52, "impossible!"); Error: 'add' doesn't yield a 'constexpr'.
     int val5 = add(val3, val4); // OK, 'add' may be called with non 'constexpr' arguments.
-    UNUSED(val5);
 }
 
 
@@ -236,7 +229,7 @@ int main() {
     test_scoped_enumerations();
     test_raw_string_literals();
     test_constexpr_on_variable();
-    test_constexpr_on_function();
+    test_constexpr_function();
 
     return 0;
 }

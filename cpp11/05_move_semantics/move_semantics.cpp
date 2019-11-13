@@ -39,7 +39,7 @@ void test_without_move_semantics() {
         int* values_;
     };
 
-    // Since true local functions are not supported, use a lambda.
+    // Since true local functions are not supported by C++, use a lambda.
     auto create_big_holder = [] { return Holder(1000); };
 
     Holder holder(42);
@@ -60,7 +60,7 @@ void test_with_move_semantics() {
             values_ = new int[n_];
             std::copy(rhs.values_, rhs.values_ + rhs.n_, values_);
         }
-        // The 'move' copy constructor. (Not used in this example, but shown anyway).
+        // The 'move' constructor. (Not used in this example, but shown anyway).
         Holder(Holder&& rhs) {
             cout << "Holder(Holder&&) called" << endl;
             // Reuse ('steal') values from rhs without deeply copying them.

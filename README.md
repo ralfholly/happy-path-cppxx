@@ -11,7 +11,5 @@ Upcoming topics
   - `decltype`
   - Foo<Bar<int>> syntax now legal
 - User defined literals
-- Variadic templates
-- Containers
-- Lambdas
+- New containers
 - Regexps

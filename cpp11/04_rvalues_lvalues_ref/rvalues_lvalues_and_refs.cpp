@@ -41,14 +41,14 @@ void test_rvalue_references() {
     int&& r42 = 42;             // Can bind rvalue reference to literal.
     int x = 42;
     // int&& rx = x;            // Error: can't bind lvalue to an rvalue reference.
-    int&& rx = std::move(x);    // Convert lvalue to rvalue.
+    int&& rx = std::move(x);    // std::move() converts lvalue to rvalue.
 
     // int&& rx2 = rx;          // Error: can't bind lvalue (rx) to rvalue reference.
     int&& rx2 = std::move(rx);  // That's the right way to duplicate rvalue references.
 
-    // Wow! Change rvalue through rvalue reference is possible.
+    // Wow! Changing rvalue through rvalue reference is possible.
     // Looks crazy, but is required to set object to invalid state
-    // in copy-ctor/assignment op.
+    // in move constructor/move assignment op.
     r42 = 23;
     rfun = 32;
     rx = 11;
