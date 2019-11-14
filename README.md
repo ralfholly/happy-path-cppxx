@@ -3,6 +3,11 @@ The Happy Path To Modern C++
 
 Modern C++ can be really hard to learn! This project aims at teaching just the *beauty* of modern C++ -- not through documentation but through simple code snippets; corner cases are intentionally omitted.
 
+Prerequisites
+-------------
+
+In order to benefit from this project, it's assumed that readers are already familiar with the C++98 language. This project aims at showing the "beautiful delta" between C++98 and modern C++.
+
 C++11
 -----
 
@@ -13,6 +18,7 @@ Cross-cutting language aspects that are either considered to be part of the core
 - range-based `for` loops
 - `initializer_list`s
 - `constexpr` expressions
+- scoped `enum`s
 
 [cpp11/class_features/](cpp11/class_features/)
 Features that pertain mostly to classes, e. g:

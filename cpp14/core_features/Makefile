@@ -1,10 +1,12 @@
 CXXFLAGS=-std=c++14 -g -O0 -Wall
 
-core_features: core_features.cpp
+TARGET = core_features
+
+$(TARGET): $(TARGET).cpp
 
 .PHONY test:
-test: core_features
+test: $(TARGET)
 	./$<
 
 .PHONY clean:
-	find -type f -executable -delete
+	rm -rf $(TARGET)
