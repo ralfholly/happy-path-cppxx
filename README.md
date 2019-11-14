@@ -48,10 +48,11 @@ C++14
 [cpp14/core_features/](cpp14/core_features/)
     Cross-cutting language aspects that are either considered to be part of the core language or are so small that they don't warrant their own chapter, e. g.:
 
-
 Upcoming topics
 ---------------
 
 - User defined literals
 - New containers
-- Regexps
+- Regexs
+- Smart pointers
+- Atomics
