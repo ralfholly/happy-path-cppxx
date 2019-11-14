@@ -218,6 +218,50 @@ void test_constexpr_function() {
 }
 
 
+//////////////////////////////////////////////////
+// 'decltype' determines the type of an expression
+// at compile-time. It can be thought of as a
+// standardized version of the proprietary 'typeof'
+// operator provided by many compilers.
+// 'auto' is often a better alternative.
+// 'decltype' is sometimes useful in template contexts.
+void test_decltype() {
+    vector<double> my_vals { 1.1, 2.2, 3.3 };
+    decltype(my_vals) your_vals;
+    // auto a = decltype(my_vals);      // Error: can't store returned type.
+    // static_assert(decltype(my_vals) == decltype(your_vals));
+                                        // Error: can't compare returned types.
+}
+
+
+//////////////////////////////////////////////////
+// New function syntax allows declaring the
+// function return type after the parameter list.
+//
+auto calc_sum(int a, int b) -> int {
+    return a + b;
+}
+
+void test_new_function_syntax() {
+    assert(calc_sum(1, 2) == 3);
+}
+
+
+//////////////////////////////////////////////////
+// New function syntax allows declaring the return
+// value type based on argument types. This is
+// might come in handy in template contexts.
+//
+template <class T, class U>
+auto decltype_return_value(T const& t, U const& u) -> decltype(t + u) {
+      return t + u;
+}
+
+void test_decltype_return_value() {
+    assert(strcmp(decltype_return_value("abc", 1), "bc") == 0);
+}
+
+
 int main() {
     test_cpp_version();
     test_static_assert();
@@ -230,6 +274,9 @@ int main() {
     test_raw_string_literals();
     test_constexpr_on_variable();
     test_constexpr_function();
+    test_decltype();
+    test_new_function_syntax();
+    test_decltype_return_value();
 
     return 0;
 }

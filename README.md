@@ -52,10 +52,6 @@ C++14
 Upcoming topics
 ---------------
 
-- Core features
-  - `decltype`
-  - Foo<Bar<int>> syntax now legal
 - User defined literals
 - New containers
 - Regexps
-[cpp11/core_features/](cpp11/core_features/)
