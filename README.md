@@ -20,6 +20,9 @@ Cross-cutting language aspects that are either considered to be part of the core
 - `constexpr` expressions
 - scoped `enum`s
 
+[cpp11/lambda_expressions/](cpp11/lambda_expressions/)
+Demonstrates how to use lambda expressions.
+
 [cpp11/class_features/](cpp11/class_features/)
 Features that pertain mostly to classes, e. g:
 - `final`, `override`, `default`, `delete` specifiers
