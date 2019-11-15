@@ -29,6 +29,18 @@ void test_cpp_version() {
 
 
 //////////////////////////////////////////////////
+// 'cstdint' library header provides fixed-width
+// integer type definitions ala C99.
+//
+#include <cstdint>
+void test_cstdint() {
+    uint8_t byte1 = 20;
+    uint_least8_t byte2 = 11;
+    int_fast16_t f16 = 2000;
+}
+
+
+//////////////////////////////////////////////////
 // 'static_assert' is a keyword that checks
 // assertions at compile-time.
 //
@@ -264,6 +276,7 @@ void test_decltype_return_value() {
 
 int main() {
     test_cpp_version();
+    test_cstdint();
     test_static_assert();
     test_nullptr();
     test_auto();
