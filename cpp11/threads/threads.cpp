@@ -125,7 +125,7 @@ void test_future_promise_simple() {
 
 
 //////////////////////////////////////////////////
-// std::async launches a function (asynchronously
+// 'std::async' launches a function (asynchronously
 // or synchronously, depending on the launch
 // policy) and returns a future to that
 // function's return value.
@@ -142,12 +142,38 @@ void test_async() {
 }
 
 
+//////////////////////////////////////////////////
+// 'std::atomic' is a wrapper that adds support
+// for synchronized access to a type.
+//
+void test_atomics() {
+    // Atomic primitive types are most likely implemented with lock-free
+    // techniques for maximum performance.
+    atomic<int> my_int {42};
+    ++my_int;   // Thread-safe increment.
+    --my_int;   // Thread-safe decrement.
+    my_int.store(23);               // Explicit write access via wrapper interface.
+    assert(my_int.load() == 23);    // Explicit read access via wrapper interface.
+    my_int = 11;                    // Write access via overloaded operator.
+    assert(my_int == 11);           // Read access via overloaded operator.
+
+    // Atomic wrappers for arbitrary (complex) types will probably utilize mutexes.
+    class Foo {
+    // ...
+    };
+    atomic<Foo> my_foo;
+    Foo your_foo;
+    my_foo = your_foo;
+}
+
+
 int main() {
     test_thread_simple_with_thread_function();
     test_thread_simple_with_lambda();
     test_condition_variable();
     test_future_promise_simple();
     test_async();
+    test_atomics();
 
     return 0;
 }

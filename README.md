@@ -55,4 +55,3 @@ Upcoming topics
 - New containers
 - Regexs
 - Smart pointers
-- Atomics
