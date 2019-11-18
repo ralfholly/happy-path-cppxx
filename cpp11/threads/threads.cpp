@@ -1,10 +1,11 @@
-#include <iostream>
+
 #include <cstring>
 #include <cassert>
 #include <thread>
 #include <atomic>
 #include <chrono>
 #include <future>
+#include <iostream>
 
 using namespace std;
 
@@ -48,6 +49,48 @@ void test_thread_simple_with_lambda() {
 
 
 //////////////////////////////////////////////////
+// Mutexes are the basic thread synchronization
+// primitives. 'lock_guard' and 'unique_lock' are
+// convenience wrappers for 'mutex'.
+//
+void test_locks() {
+    mutex m;
+
+    // Explicit locking (rarely used).
+    m.lock();
+    // ... critical section ...
+    m.unlock();
+
+    // Try-locking.
+    if (m.try_lock()) {
+        // ... critical section ...
+        m.unlock();
+    } else {
+        // Lock was not available.
+    }
+
+    // 'lock_guard' automatically calls 'mutex::lock' ('mutex::unlock') at the
+    // beginning (end) of a block.
+    {
+        lock_guard<mutex> my_guard(m);      // m.lock()
+        // ... critical section ...
+    } // m.unlock()
+
+    // 'unique_lock' is similar to 'lock_guard' but has a wider interface which,
+    // for instance, allows explicit (and multiple) locking/unlocking of the
+    // wrapped mutex.
+    {
+        unique_lock<mutex> my_unique_lock(m);
+        // ... critical section ...
+        my_unique_lock.unlock();        // Explicit unlocking.
+        // ...
+        my_unique_lock.lock();          // Explicit locking.
+        // ... critical section ...
+    } // m.unlock()
+}
+
+
+//////////////////////////////////////////////////
 // Condition variables allow (multiple) threads to
 // wait for an event.
 void test_condition_variable() {
@@ -63,7 +106,7 @@ void test_condition_variable() {
     // Producer notifies/signals condition variable.
     auto producer = std::thread([&]
     {
-        this_thread::sleep_for(chrono::seconds(2));
+        this_thread::sleep_for(chrono::milliseconds(200));
         // ... wait a little ...
         unique_lock<mutex> lock(mtx);
         notified = true;
@@ -105,7 +148,7 @@ void test_future_promise_simple() {
     // Producer sets the promise's value.
     auto producer = std::thread([&]()
     {
-        this_thread::sleep_for(chrono::seconds(2));
+        this_thread::sleep_for(chrono::milliseconds(200));
         promise.set_value("Howdy!");
     });
 
@@ -132,7 +175,7 @@ void test_future_promise_simple() {
 void test_async() {
     auto add_two = [](int a, int b) -> int {
         cout << "Computing " << a << " + " << b << "... " << flush;
-        this_thread::sleep_for(chrono::seconds(3));
+        this_thread::sleep_for(chrono::milliseconds(300));
         // ... wait a little ...
         return a + b;   // Like an implicit promise.set_value(a + b).
     };
@@ -170,6 +213,7 @@ void test_atomics() {
 int main() {
     test_thread_simple_with_thread_function();
     test_thread_simple_with_lambda();
+    test_locks();
     test_condition_variable();
     test_future_promise_simple();
     test_async();
