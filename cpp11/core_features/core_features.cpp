@@ -274,6 +274,21 @@ void test_decltype_return_value() {
 }
 
 
+//////////////////////////////////////////////////
+// User-defined literals allow combining values
+// with units.
+//
+double operator"" _km(long double d) { return d * 1000.0; }
+double operator"" _m(long double d)  { return d;          }
+double operator"" _dm(long double d) { return d / 10.0;   }
+double operator"" _cm(long double d) { return d / 100.0;  }
+double operator"" _mm(long double d) { return d / 1000.0; }
+
+void test_user_defined_literals() {
+    assert(((10.0_km + 4.0_m + 1.0_cm) - 10004.01) < 0.01);
+}
+
+
 int main() {
     test_cpp_version();
     test_cstdint();

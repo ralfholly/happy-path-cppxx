@@ -13,12 +13,13 @@ C++11
 
 [cpp11/core_features/](cpp11/core_features/)
 Cross-cutting language aspects that are either considered to be part of the core language or are so small that they don't warrant their own chapter, e. g.:
-- `static_assert`
+- Static assertions
 - `auto` types
-- range-based `for` loops
+- Range-based `for` loops
 - `initializer_list`s
 - `constexpr` expressions
-- scoped `enum`s
+- Scoped `enum`s
+- User-defined literals
 
 [cpp11/lambda_expressions/](cpp11/lambda_expressions/)
 Demonstrates how to use lambda expressions.
@@ -54,7 +55,5 @@ C++14
 Upcoming topics
 ---------------
 
-- User defined literals
 - New containers
-- Regexs
 - Smart pointers
