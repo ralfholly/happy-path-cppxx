@@ -154,12 +154,54 @@ void test_weak_ptr() {
     weak_ptr<int> wp{sp};
     assert(sp.use_count() == 1);
 
+    // Use 'lock' to create a temporary shared pointer
+    {
     shared_ptr<int> my_sp = wp.lock();
     if (my_sp) {
+        assert(sp.use_count() == 2);
+        assert(my_sp.use_count() == 2);
 
     } else {
-        cerr << "Shared " << endl;
+        assert(false);
     }
+    }
+    // Temporary shared pointer is gone.
+    assert(sp.use_count() == 1);
+
+    // Bind shared pointer to new resource, drop first resource.
+    sp.reset(new int{23});
+    assert(sp.use_count() == 1);
+
+    // Use 'lock' to create a temporary shared pointer.
+    {
+    shared_ptr<int> my_sp = wp.lock();
+    // Locking will fail because original resource is gone.
+    if (my_sp) {
+        assert(false);
+    } else {
+        // Use count of the new resource unchanged.
+        assert(sp.use_count() == 1);
+    }
+    }
+
+    // Yet another way to check if a resource is still available.
+    assert(wp.expired());
+}
+
+
+//////////////////////////////////////////////////
+// 'make_shared' is a smart pointer factory method.
+// Using 'make_shared' might be more efficient as
+// a single heap allocation can be used to allocate
+// the resource and the control block (if any).
+//
+void test_make_shared() {
+    // Explicit shared pointer creation.
+    shared_ptr<int> sp1 = shared_ptr<int>{new int{42}};
+    // Factory method.
+    shared_ptr<int> sp2 = make_shared<int>(42);
+
+//  unique_ptr<int> up = make_unique<int>(42);  // Error: make_unique is a C++14 feature.
 }
 
 
@@ -168,6 +210,7 @@ int main() {
     test_unique_ptr_advanced();
     test_shared_ptr_basic();
     test_shared_ptr_advanced();
+    test_make_shared();
 
     return 0;
 }
