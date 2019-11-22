@@ -43,6 +43,26 @@ Demonstrates the various aspecs of multi-threading, including:
 - `std::promise` and `std::future`
 - Launching and synchronizing threads with `std::async`
 
+[cpp11/smart_pointers/](cpp11/smart_pointers/)
+Introduces smart pointers, e. g.:
+- `std::unique_ptr`
+- `std::shared_ptr`
+- `std::weak_ptr`
+
+[cpp11/containers/](cpp11/smart_pointers/)
+Gives an overview of the following containers:
+- `std::array`
+- `std::forward_list`
+- `std::unordered_set` and `std::unordered_multiset`
+- `std::unordered_map` and `std::unordered_multimap`
+
+[cpp11/containers/](cpp11/smart_pointers/)
+Introduces smart pointers, e. g.:
+- `std::unique_ptr`
+- `std::shared_ptr`
+- `std::weak_ptr`
+
+
 [cpp11/variadic_templates/](cpp11/variadic_templates/)
 Shows how to use variadic (arbitrary-number-of-argument) templates and what "perfect forwarding" is about.
 
@@ -55,5 +75,4 @@ C++14
 Upcoming topics
 ---------------
 
-- New containers
-- Smart pointers
+Lot's of C++14 stuff :-)
