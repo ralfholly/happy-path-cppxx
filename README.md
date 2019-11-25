@@ -62,9 +62,14 @@ Introduces smart pointers, e. g.:
 - `std::shared_ptr`
 - `std::weak_ptr`
 
-
 [cpp11/variadic_templates/](cpp11/variadic_templates/)
 Shows how to use variadic (arbitrary-number-of-argument) templates and what "perfect forwarding" is about.
+
+[cpp11/odds_and_ends/](cpp11/odds_and_ends/)
+Miscellaneous topics, like:
+- Algorithms
+- `std::tuple`
+- Alignment
 
 C++14
 -----

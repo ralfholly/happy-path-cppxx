@@ -3,10 +3,12 @@
 #include <cassert>
 #include <iostream>
 #include <vector>
+#include <utility>
 
 #include <algorithm>
 #include <numeric>
 #include <tuple>
+#include <memory>
 
 using namespace std;
 
@@ -51,7 +53,7 @@ void test_algorithms() {
 
 
 //////////////////////////////////////////////////
-// `tuple` class.
+// 'tuple' class and 'tie' utility.
 //
 void test_tuple() {
     auto my_tuple = make_tuple(1, "PI", 3.14f);
@@ -70,14 +72,59 @@ void test_tuple() {
     assert(name == string{"PI"});
     assert(value == 3.14f);
 
-    int i1, i2, i3;
-    tie(i1, i2, i3) = vector<int>{3, 4, 5};
+    // Use 'tie' to extract from a 'pair'.
+    pair<int, string> my_pair{42, "the answer"};
+    int number;
+    string description;
+    tie(number, description) = my_pair;
+}
+
+
+//////////////////////////////////////////////////
+// Memory alignment utilities.
+//
+void test_alignment() {
+
+    // 'alignof' returns the alignment in bytes of a given type.
+    assert(alignof(char) == 1);
+    assert(alignof(uint32_t) == 4);
+    assert(alignof(double) == 8);
+
+    // 'alignas' alignes an object on an n-byte boundary.
+    struct Foo {
+        double d;
+        string s;
+    };
+    alignas(128) Foo foo;
+    assert((reinterpret_cast<size_t>(&foo) % 128) == 0);
+
+    // 'aligned_storage' builds a type that meets given alignment criteria.
+    // .. 512 bytes, aligned on a 128-byte boundary.
+    aligned_storage<512, 128>::type my_object;
+    assert((reinterpret_cast<size_t>(&my_object) % 128) == 0);
+    assert(sizeof(my_object) == 512);
+
+    // 'align' aligns pointers to memory at run-time.
+    uint8_t buffer[1024];
+    void* memory = &buffer[0];
+    size_t size = sizeof(buffer);
+    cout << "Original address: " << reinterpret_cast<size_t>(memory) << ", original size: " << sizeof(buffer) << endl;
+    // 'memory' will be aligned on a 128-byte boundary, for 3 'double' values
+    // and 'size' will be set to the new size of the aligned memory.
+    align(128, 3 * sizeof(double), memory, size);
+    cout << "Aligned address: " << reinterpret_cast<size_t>(memory) << ", aligned size: " << size << endl;
+    assert((sizeof(buffer) - size) <= 128);
+    double* pd = static_cast<double*>(memory);
+    *pd++ = 1.1;
+    *pd++ = 2.2;
+    *pd++ = 3.3;
 }
 
 
 int main() {
     test_algorithms();
     test_tuple();
+    test_alignment();
 
     return 0;
 }
