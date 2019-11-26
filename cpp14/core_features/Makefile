@@ -1,4 +1,4 @@
-CXXFLAGS=-std=c++14 -g -O0 -Wall
+CXXFLAGS=-std=c++14 -pedantic -g -O0 -Wall
 
 TARGET = core_features
 

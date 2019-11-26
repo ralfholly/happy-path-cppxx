@@ -5,17 +5,14 @@
 #include <vector>
 #include <utility>
 
-#include <algorithm>
-#include <numeric>
-#include <tuple>
-#include <memory>
-
 using namespace std;
 
 
 //////////////////////////////////////////////////
 // Various algorithms.
 //
+#include <algorithm>
+#include <numeric>
 void test_algorithms() {
     const vector<int> primes{2, 3, 5, 7, 11, 13, 17, 19};
 
@@ -55,6 +52,7 @@ void test_algorithms() {
 //////////////////////////////////////////////////
 // 'tuple' class and 'tie' utility.
 //
+#include <tuple>
 void test_tuple() {
     auto my_tuple = make_tuple(1, "PI", 3.14f);
 
@@ -83,6 +81,7 @@ void test_tuple() {
 //////////////////////////////////////////////////
 // Memory alignment utilities.
 //
+#include <memory>
 void test_alignment() {
 
     // 'alignof' returns the alignment in bytes of a given type.
@@ -121,10 +120,42 @@ void test_alignment() {
 }
 
 
+//////////////////////////////////////////////////
+// Type traits allow checking of certain properties
+// on types at compile-time.
+//
+#include <type_traits>
+void test_type_traits() {
+    class Base { };
+    class Derived : public Base { };
+
+    static_assert(is_integral<int>::value, "");
+    static_assert(not is_integral<string>::value, "");
+    static_assert(is_class<string>::value, "");
+    static_assert(not is_class<char>::value, "");
+    static_assert(is_base_of<Base, Derived>::value, "");
+    static_assert(not is_base_of<Derived, Base>::value, "");
+    static_assert(not has_virtual_destructor<string>::value, "");
+    static_assert(is_pod<Derived>::value, "");
+
+    typedef int MY_INT;
+    static_assert(is_same<int, MY_INT>::value, "");
+    static_assert(is_signed<int>::value, "");
+    static_assert(not is_signed<uint16_t>::value, "");
+
+    int my_array[10][20];
+    static_assert(is_array<decltype(my_array)>::value, "");
+    static_assert(rank<decltype(my_array)>::value == 2, "");
+
+    // Plus a lot more, see type_traits header file.
+}
+
+
 int main() {
     test_algorithms();
     test_tuple();
     test_alignment();
+    test_type_traits();
 
     return 0;
 }

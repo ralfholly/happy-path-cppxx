@@ -72,7 +72,8 @@ Shows how to use variadic (arbitrary-number-of-argument) templates and what "per
 Miscellaneous topics, like:
 - Algorithms
 - `std::tuple`
-- Alignment utilities
+- Memory alignment
+- Type traits
 
 C++14
 -----

@@ -1,4 +1,4 @@
-CXXFLAGS=-std=c++11 -g -O0 -Wall -pthread
+CXXFLAGS=-std=c++11 -pedantic -g -O0 -Wall -pthread
 
 TARGET=regex
 

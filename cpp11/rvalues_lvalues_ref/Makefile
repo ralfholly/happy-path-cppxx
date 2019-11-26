@@ -1,4 +1,4 @@
-CXXFLAGS=-std=c++11 -g -O0 -Wall
+CXXFLAGS=-std=c++11 -pedantic -g -O0 -Wall
 
 TARGET := rvalues_lvalues_and_refs
 

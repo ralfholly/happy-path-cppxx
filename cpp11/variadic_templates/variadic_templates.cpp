@@ -32,7 +32,7 @@ FirstArg combine(FirstArg first_arg, RemArgs... rem_args) {
     // Recursive call with first element stripped and remaining args expanded into
     // a comma-seperated list of arguments.
     return first_arg + combine(rem_args...);
-};
+}
 
 
 void test_variadic_templates_recursive() {
