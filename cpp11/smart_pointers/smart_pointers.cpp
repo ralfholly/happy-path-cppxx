@@ -96,18 +96,7 @@ void test_shared_ptr_basic() {
    } // pi2 dtor reduces use count.
    assert(pi1.use_count() == 1);
 
-   // Managed array.
-   shared_ptr<int[]> pia1{new int[100]{11, 22, 33}};
-   assert(pia1[1] == 22);
-   assert(pia1.use_count() == 1);
-   {
-       // Create another pointer to same shared resource.
-       shared_ptr<int[]> pia2{pia1};
-       assert(pia2[2] == 33);
-       assert(pia2.use_count() == 2);
-       assert(pia1.use_count() == 2);
-   } // pia2 dtor reduces use count.
-   assert(pia1.use_count() == 1);
+   // Managed arrays not supported until C++17.
 }
 
 
