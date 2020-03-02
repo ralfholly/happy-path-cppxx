@@ -168,6 +168,47 @@ void test_future_promise_simple() {
 
 
 //////////////////////////////////////////////////
+// Two threads communicate via promise/future.
+// The consumer uses 'future::wait_for'
+// instead of 'future::get' to avoid blocking.
+void test_future_promise_extended() {
+    // Allocate a promise.
+    auto promise = std::promise<std::string>();
+
+    // Producer sets the promise's value.
+    auto producer = std::thread([&]()
+    {
+        this_thread::sleep_for(chrono::milliseconds(200));
+        promise.set_value("Greetings!");
+    });
+
+    // Consumer gets the future's value.
+    auto consumer = std::thread([&]()
+    {
+        // Get the promise's future.
+        auto future = promise.get_future();
+        for (;;) {
+            cout << "Waiting for future... " << flush;
+            auto status = future.wait_for(chrono::milliseconds(20));
+            if (status == future_status::timeout) {
+                cout << "no result yet!" << endl;
+            } else if (status == future_status::ready) {
+                // Value not consumed yet.
+                assert(future.valid());
+                cout << "got it: " << future.get() << endl;
+                // Value consumed.
+                assert(!future.valid());
+                break;
+            }
+        }
+    });
+
+    producer.join();
+    consumer.join();
+}
+
+
+//////////////////////////////////////////////////
 // 'std::async' launches a function (asynchronously
 // or synchronously, depending on the launch
 // policy) and returns a future to that
@@ -216,6 +257,7 @@ int main() {
     test_locks();
     test_condition_variable();
     test_future_promise_simple();
+    test_future_promise_extended();
     test_async();
     test_atomics();
 
